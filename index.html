@@ -1,62 +1,448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aashu's Portfolio</title>
-    <link rel="stylesheet" href="styles/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harsh Sharma — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1B2A;
+    --ink-2:#142337;
+    --ink-3:#0B1522;
+    --grid-line: rgba(201,214,227,0.06);
+    --paper:#C9D6E3;
+    --text-hi:#F5F3EE;
+    --text-body:#B9C6D6;
+    --text-dim:#5B7089;
+    --amber:#F2A93B;
+    --amber-dim: rgba(242,169,59,0.15);
+    --teal:#4FD8C4;
+    --teal-dim: rgba(79,216,196,0.15);
+    --font-display:'Fraunces', serif;
+    --font-mono:'JetBrains Mono', monospace;
+    --font-body:'Inter', sans-serif;
+    --maxw: 1080px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      repeating-linear-gradient(0deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 32px),
+      repeating-linear-gradient(90deg, var(--grid-line) 0px, var(--grid-line) 1px, transparent 1px, transparent 32px),
+      var(--ink);
+    color:var(--text-body);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  :focus-visible{outline:2px solid var(--amber); outline-offset:3px; border-radius:2px;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  ::selection{background:var(--amber); color:var(--ink);}
+
+  /* ---------- NAV ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(14,27,42,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid rgba(201,214,227,0.08);
+  }
+  .nav-inner{
+    max-width:var(--maxw); margin:0 auto; padding:18px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-mark{
+    font-family:var(--font-mono); font-size:13px; letter-spacing:0.08em;
+    color:var(--text-hi); display:flex; align-items:center; gap:8px;
+  }
+  .nav-mark .dot{width:7px; height:7px; border-radius:50%; background:var(--teal); box-shadow:0 0 8px var(--teal);}
+  .nav-links{display:flex; gap:28px; font-family:var(--font-mono); font-size:12.5px; letter-spacing:0.05em;}
+  .nav-links a{color:var(--text-dim); transition:color .2s;}
+  .nav-links a:hover{color:var(--amber);}
+  @media (max-width:640px){ .nav-links{gap:16px;} .nav-links span.lbl{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:100px 0 70px;}
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12.5px; letter-spacing:0.12em;
+    color:var(--amber); margin-bottom:22px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:22px; height:1px; background:var(--amber);}
+  h1.headline{
+    font-family:var(--font-display); font-weight:600; font-optical-sizing:auto;
+    font-size:clamp(34px, 5.4vw, 60px); line-height:1.08; letter-spacing:-0.01em;
+    color:var(--text-hi); max-width:820px;
+  }
+  .headline em{font-style:italic; color:var(--teal); font-weight:500;}
+  .sub{
+    margin-top:22px; max-width:560px; font-size:16.5px; color:var(--text-body);
+  }
+  .hero-cta{display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-mono); font-size:13px; letter-spacing:0.03em;
+    padding:12px 20px; border-radius:3px; border:1px solid transparent;
+    display:inline-flex; align-items:center; gap:8px; transition:all .2s;
+  }
+  .btn-primary{background:var(--amber); color:var(--ink-3); font-weight:600;}
+  .btn-primary:hover{background:#ffc266;}
+  .btn-ghost{border-color:rgba(201,214,227,0.25); color:var(--text-hi);}
+  .btn-ghost:hover{border-color:var(--teal); color:var(--teal);}
+
+  /* ---------- ROUTING DIAGRAM (signature element) ---------- */
+  .diagram{
+    margin-top:64px; border:1px solid rgba(201,214,227,0.12); border-radius:8px;
+    background:var(--ink-2); padding:28px 24px 22px;
+  }
+  .diagram-cap{
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim); letter-spacing:0.04em;
+    margin-bottom:22px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;
+  }
+  .diagram-cap b{color:var(--teal); font-weight:500;}
+  .route-track{
+    position:relative; display:flex; justify-content:space-between; align-items:center;
+    height:64px; margin:0 6px;
+  }
+  .route-line{
+    position:absolute; top:50%; left:6%; right:6%; height:1px;
+    background:linear-gradient(90deg, var(--amber), var(--teal));
+    opacity:0.35; transform:translateY(-50%);
+  }
+  .node{
+    position:relative; z-index:2; background:var(--ink-2);
+    border:1px solid rgba(201,214,227,0.2); border-radius:6px;
+    padding:10px 14px; font-family:var(--font-mono); font-size:12px; text-align:center;
+    color:var(--text-hi); min-width:88px;
+  }
+  .node small{display:block; color:var(--text-dim); font-size:10px; margin-top:3px; letter-spacing:0.03em;}
+  .pulse{
+    position:absolute; top:50%; width:9px; height:9px; margin-top:-4.5px;
+    border-radius:50%; background:var(--amber); box-shadow:0 0 10px 2px var(--amber);
+    animation: travel 4.5s ease-in-out infinite;
+  }
+  @keyframes travel{
+    0%{left:6%; background:var(--amber); box-shadow:0 0 10px 2px var(--amber);}
+    45%{left:50%; background:var(--teal); box-shadow:0 0 10px 2px var(--teal); transform:translateX(-50%);}
+    50%{left:50%; transform:translateX(-50%);}
+    95%{left:94%; background:var(--amber); box-shadow:0 0 10px 2px var(--amber); transform:translateX(-100%);}
+    100%{left:94%; transform:translateX(-100%);}
+  }
+  @media (prefers-reduced-motion: reduce){ .pulse{animation:none; left:50%; transform:translateX(-50%);} }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:76px 0;}
+  .section-head{margin-bottom:40px;}
+  .section-head .eyebrow{margin-bottom:14px;}
+  h2.section-title{
+    font-family:var(--font-display); font-weight:600; font-size:clamp(24px,3vw,32px);
+    color:var(--text-hi);
+  }
+  .divider{border:none; border-top:1px solid rgba(201,214,227,0.08);}
+
+  /* about */
+  .about-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:40px;}
+  @media (max-width:800px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{font-size:15.5px; max-width:520px; margin-bottom:14px;}
+  .edu-card{
+    border:1px solid rgba(201,214,227,0.12); background:var(--ink-2); border-radius:8px; padding:22px;
+  }
+  .edu-card .school{font-family:var(--font-display); font-size:19px; color:var(--text-hi); font-weight:600;}
+  .edu-card .deg{font-size:13.5px; margin-top:6px; color:var(--text-body);}
+  .edu-card .meta{font-family:var(--font-mono); font-size:11.5px; color:var(--text-dim); margin-top:12px;}
+  .tags{display:flex; flex-wrap:wrap; gap:7px; margin-top:14px;}
+  .tag{
+    font-family:var(--font-mono); font-size:10.5px; color:var(--teal);
+    border:1px solid var(--teal-dim); background:var(--teal-dim);
+    padding:4px 9px; border-radius:3px; letter-spacing:0.02em;
+  }
+
+  /* projects */
+  .proj-grid{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:800px){.proj-grid{grid-template-columns:1fr;}}
+  .proj-card{
+    border:1px solid rgba(201,214,227,0.12); background:var(--ink-2); border-radius:8px;
+    padding:26px; display:flex; flex-direction:column; transition:border-color .2s, transform .2s;
+  }
+  .proj-card:hover{border-color:rgba(242,169,59,0.4); transform:translateY(-2px);}
+  .proj-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .proj-cat{font-family:var(--font-mono); font-size:10.5px; color:var(--amber); letter-spacing:0.06em;}
+  .proj-date{font-family:var(--font-mono); font-size:10.5px; color:var(--text-dim); white-space:nowrap;}
+  .proj-title{font-family:var(--font-display); font-size:21px; font-weight:600; color:var(--text-hi); margin-top:10px;}
+  .proj-loc{font-size:12.5px; color:var(--text-dim); margin-top:2px;}
+  .proj-stack{display:flex; flex-wrap:wrap; gap:6px; margin:14px 0 16px;}
+  .stack-chip{font-family:var(--font-mono); font-size:10px; color:var(--text-body); border:1px solid rgba(201,214,227,0.18); padding:3px 8px; border-radius:3px;}
+  .proj-list{list-style:none; font-size:13.5px; color:var(--text-body); display:flex; flex-direction:column; gap:9px;}
+  .proj-list li{padding-left:16px; position:relative;}
+  .proj-list li::before{content:'▸'; position:absolute; left:0; color:var(--teal); font-size:11px; top:2px;}
+
+  /* skills */
+  .skills-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
+  @media (max-width:900px){.skills-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:520px){.skills-grid{grid-template-columns:1fr;}}
+  .skill-col .skill-head{font-family:var(--font-mono); font-size:11px; color:var(--text-dim); letter-spacing:0.08em; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid rgba(201,214,227,0.1);}
+  .skill-col ul{list-style:none; display:flex; flex-direction:column; gap:8px;}
+  .skill-col li{font-size:13.5px; color:var(--text-body);}
+
+  /* achievements */
+  .ach-list{display:flex; flex-direction:column; gap:0;}
+  .ach-item{
+    display:flex; gap:20px; align-items:baseline; padding:18px 0;
+    border-bottom:1px solid rgba(201,214,227,0.08);
+  }
+  .ach-item:first-child{padding-top:0;}
+  .ach-mark{font-family:var(--font-mono); color:var(--amber); font-size:13px; width:20px; flex-shrink:0;}
+  .ach-text{font-size:14.5px; color:var(--text-body);}
+  .ach-text b{color:var(--text-hi); font-weight:600;}
+
+  /* contact / footer */
+  footer{padding:70px 0 50px; border-top:1px solid rgba(201,214,227,0.08);}
+  .contact-wrap{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:30px;}
+  .contact-head{font-family:var(--font-display); font-size:clamp(26px,4vw,40px); color:var(--text-hi); font-weight:600; max-width:480px;}
+  .contact-links{display:flex; flex-direction:column; gap:10px; font-family:var(--font-mono); font-size:13.5px;}
+  .contact-links a{color:var(--text-body); transition:color .2s;}
+  .contact-links a:hover{color:var(--teal);}
+  .foot-note{margin-top:50px; font-family:var(--font-mono); font-size:11px; color:var(--text-dim); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+
+  .reveal{opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+</style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to Aashu's Portfolio</h1>
-        <nav>
-            <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hello! I'm Aashu, a passionate web developer. I enjoy creating dynamic and responsive web applications.</p>
-    </section>
+<header class="nav">
+  <div class="nav-inner">
+    <div class="nav-mark"><span class="dot"></span>HARSH SHARMA</div>
+    <nav class="nav-links">
+      <a href="#about"><span class="lbl">01</span> About</a>
+      <a href="#projects"><span class="lbl">02</span> Projects</a>
+      <a href="#skills"><span class="lbl">03</span> Skills</a>
+      <a href="#contact"><span class="lbl">04</span> Contact</a>
+    </nav>
+  </div>
+</header>
 
-    <section id="projects">
-        <h2>Projects</h2>
-        <ul>
-            <li>
-                <h3>Project 1</h3>
-                <p>A brief description of Project 1.</p>
-            </li>
-            <li>
-                <h3>Project 2</h3>
-                <p>A brief description of Project 2.</p>
-            </li>
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero" style="padding-top:80px;">
+    <div class="eyebrow">DCRUST '28 · SONIPAT, HARYANA</div>
+    <h1 class="headline">Systems that make the right call — <em>before you finish asking.</em></h1>
+    <p class="sub">B.Tech CSE student building agentic AI pipelines, real-time coaching tools, and Android experiences with unusual care for the small details. I'd rather ship the harder version than a prettier slide.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#projects">See the work →</a>
+      <a class="btn btn-ghost" href="mailto:aashusharma2332@gmail.com">Email me</a>
+    </div>
+
+    <div class="diagram reveal">
+      <div class="diagram-cap">
+        <span>// how CareerForge routes a task, live</span>
+        <span><b>zero-cloud-cost baseline</b> when local inference clears the bar</span>
+      </div>
+      <div class="route-track">
+        <div class="route-line"></div>
+        <div class="node">LOCAL<small>Ollama</small></div>
+        <div class="node">MID-TIER<small>hosted APIs</small></div>
+        <div class="node">CLOUD<small>frontier LLMs</small></div>
+        <div class="pulse"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-head reveal">
+      <div class="eyebrow">ABOUT</div>
+      <h2 class="section-title">Third-year, first-hand experience.</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a Computer Science undergrad who spends most nights shipping things rather than reading about them — agentic AI systems that route between local and cloud models, an Android app with a real-time 3D environment, and a coaching tool that listens and thinks alongside you in an interview.</p>
+        <p>1st Prize at Technova 2026 (Think Future category, out of 1,000+ national participants), Round 1 clear at the HackRust national hackathon, and a running list of prototypes that started as "can this even be done."</p>
+      </div>
+      <div class="edu-card reveal">
+        <div class="school">DCRUST</div>
+        <div class="deg">B.Tech, Computer Science &amp; Engineering</div>
+        <div class="meta">EXPECTED JUNE 2028 · CGPA 7.0/10 (THROUGH SEM 4)</div>
+        <div class="tags">
+          <span class="tag">DSA</span>
+          <span class="tag">DAA</span>
+          <span class="tag">DBMS</span>
+          <span class="tag">OOP</span>
+          <span class="tag">OS</span>
+          <span class="tag">Computer Networks</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-head reveal">
+      <div class="eyebrow">SELECTED WORK</div>
+      <h2 class="section-title">Four systems, four different kinds of pressure.</h2>
+    </div>
+    <div class="proj-grid">
+
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="proj-cat">AGENTIC AI SYSTEM</span>
+          <span class="proj-date">Jun 2026 — Present</span>
+        </div>
+        <div class="proj-title">CareerForge</div>
+        <div class="proj-loc">Multi-agent automation system · Karnal, Haryana</div>
+        <div class="proj-stack">
+          <span class="stack-chip">Python</span><span class="stack-chip">LLM APIs</span>
+          <span class="stack-chip">Ollama</span><span class="stack-chip">FastAPI</span><span class="stack-chip">SQLite</span>
+        </div>
+        <ul class="proj-list">
+          <li>22 specialized AI agents coordinating through separate prompt chains to automate developer and analyst workflows.</li>
+          <li>3-tier dynamic routing — local Ollama → mid-tier APIs → cloud LLMs — selecting models by task complexity, latency, and cost.</li>
+          <li>Pydantic + JSON Schema validation layers for structured output and automated-retry error handling.</li>
         </ul>
-    </section>
+      </div>
 
-    <section id="contact">
-        <h2>Contact</h2>
-        <form>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="proj-cat">REAL-TIME AI TOOLING</span>
+          <span class="proj-date">May 2026 — Present</span>
+        </div>
+        <div class="proj-title">Interview Coach</div>
+        <div class="proj-loc">Local AI coaching HUD · Karnal, Haryana</div>
+        <div class="proj-stack">
+          <span class="stack-chip">Python</span><span class="stack-chip">Ollama</span>
+          <span class="stack-chip">Whisper</span><span class="stack-chip">RapidOCR</span><span class="stack-chip">Tkinter</span>
+        </div>
+        <ul class="proj-list">
+          <li>Real-time audio loopback capture with Faster-Whisper transcription during live interviews.</li>
+          <li>Predictive answer generation — fires query context to a local LLM before the question even finishes.</li>
+          <li>RapidOCR screen capture auto-detects coding vs. behavioral prompts and switches templates accordingly.</li>
+        </ul>
+      </div>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="proj-cat">BACKEND · 1ST PRIZE, TECHNOVA 2026</span>
+          <span class="proj-date">Mar 2026</span>
+        </div>
+        <div class="proj-title">Vitalis</div>
+        <div class="proj-loc">AI food safety platform · Sonipat, Haryana</div>
+        <div class="proj-stack">
+          <span class="stack-chip">FastAPI</span><span class="stack-chip">PostgreSQL</span>
+          <span class="stack-chip">SHA-256</span><span class="stack-chip">Docker</span>
+        </div>
+        <ul class="proj-list">
+          <li>Won 1st Prize in the Think Future category out of 1,000+ national-level participants.</li>
+          <li>Designed a FastAPI backend for real-time food safety and risk-assessment processing.</li>
+          <li>Zero-PII architecture to keep sensitive health indicators handled securely.</li>
+        </ul>
+      </div>
 
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required></textarea>
+      <div class="proj-card reveal">
+        <div class="proj-top">
+          <span class="proj-cat">ANDROID · 3D UI CRAFT</span>
+          <span class="proj-date">Apr 2026 — Present</span>
+        </div>
+        <div class="proj-title">Naam Smaran</div>
+        <div class="proj-loc">Devotional companion app · Sonipat &amp; Karnal</div>
+        <div class="proj-stack">
+          <span class="stack-chip">Kotlin</span><span class="stack-chip">Jetpack Compose</span>
+          <span class="stack-chip">Room</span><span class="stack-chip">Hilt</span><span class="stack-chip">Filament 3D</span>
+        </div>
+        <ul class="proj-list">
+          <li>"Zero-UI" floating counter interface with 20ms haptic feedback and particle shimmer animations.</li>
+          <li>Real-time 3D Kunj environment rendering pre-dawn to deep-night scenes as the day progresses.</li>
+          <li>Room-backed local storage for reading schedules, checklists, and daily progress logs.</li>
+        </ul>
+      </div>
 
-            <button type="submit">Send</button>
-        </form>
-    </section>
+    </div>
+  </section>
 
-    <footer>
-        <p>&copy; 2024 Aashu. All rights reserved.</p>
-    </footer>
+  <hr class="divider">
 
-    <script src="scripts/scripts.js"></script>
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-head reveal">
+      <div class="eyebrow">TOOLKIT</div>
+      <h2 class="section-title">What I actually reach for.</h2>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-col reveal">
+        <div class="skill-head">LANGUAGES</div>
+        <ul><li>Python</li><li>Kotlin</li><li>JavaScript</li><li>Java</li><li>C</li><li>SQL</li></ul>
+      </div>
+      <div class="skill-col reveal">
+        <div class="skill-head">FRAMEWORKS</div>
+        <ul><li>FastAPI</li><li>Flask</li><li>Node.js / Express</li><li>Jetpack Compose</li><li>Room</li></ul>
+      </div>
+      <div class="skill-col reveal">
+        <div class="skill-head">AI &amp; LLM</div>
+        <ul><li>Prompt Engineering</li><li>Agentic Workflows</li><li>3-Tier Routing</li><li>RAG Pipelines</li><li>Local Inference (Ollama)</li><li>Whisper STT · RapidOCR</li></ul>
+      </div>
+      <div class="skill-col reveal">
+        <div class="skill-head">TOOLS &amp; PLATFORMS</div>
+        <ul><li>Git / GitHub</li><li>Docker</li><li>Linux CLI</li><li>VS Code</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="section-head reveal">
+      <div class="eyebrow">ACHIEVEMENTS &amp; CERTIFICATIONS</div>
+      <h2 class="section-title">Proof, not just claims.</h2>
+    </div>
+    <div class="ach-list">
+      <div class="ach-item reveal">
+        <span class="ach-mark">01</span>
+        <span class="ach-text"><b>1st Prize, Technova 2026</b> — Think Future category, out of 1,000+ national-level participants, for the Vitalis platform.</span>
+      </div>
+      <div class="ach-item reveal">
+        <span class="ach-mark">02</span>
+        <span class="ach-text"><b>HackRust National-Level Hackathon</b> — cleared Round 1 among 1,000+ applicants.</span>
+      </div>
+      <div class="ach-item reveal">
+        <span class="ach-mark">03</span>
+        <span class="ach-text"><b>Certifications</b> — Python Development (Tutedude), Prompt Engineering.</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <div class="contact-head reveal">Building something worth interning on? Let's talk.</div>
+      <div class="contact-links reveal">
+        <a href="mailto:aashusharma2332@gmail.com">aashusharma2332@gmail.com</a>
+        <a href="https://linkedin.com/in/harsh-sharma-597b02216" target="_blank" rel="noopener">linkedin.com/in/harsh-sharma-597b02216</a>
+        <a href="https://github.com/aashu035" target="_blank" rel="noopener">github.com/aashu035</a>
+        <a href="tel:+919896450090">+91 98964 50090</a>
+      </div>
+    </div>
+    <div class="foot-note">
+      <span>© 2026 Harsh Sharma</span>
+      <span>Sonipat, Haryana, India</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
 </body>
 </html>
